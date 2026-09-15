@@ -1,0 +1,71 @@
+import { Link, useLocation } from "react-router-dom";
+import { FaArrowLeft } from "react-icons/fa6";
+
+const NewsDetails = () => {
+  const location = useLocation();
+  const newsData = location?.state?.news;
+
+  console.log(newsData);
+
+  if (!newsData) {
+    return (
+      <div className="min-h-[58vh] flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-3xl font-bold">No News Found</h1>
+          <p className="text-gray-500 mt-3">
+            Please go back and select a news article.
+          </p>
+          <Link
+            to="/"
+            className="inline-block mt-6 bg-red-600 text-white px-6 py-3 rounded-lg"
+          >
+            Back to Home
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="max-w-4xl mx-auto px-6 py-10">
+      <Link
+        className="flex items-center gap-3 font-semibold hover:underline text-red-600"
+        to="/"
+      >
+        <FaArrowLeft /> Back To Home
+      </Link>
+
+      <div className="bg-white rounded-3xl shadow-lg overflow-hidden mt-3">
+        <img
+          src={newsData.image}
+          alt="loading..."
+          className="w-full object-cover h-100"
+        />
+
+        <div className="p-6 ">
+          <p className="text-red-600 font-medium">{newsData.source.name}</p>
+          <h1 className="text-3xl font-bold mt-2">{newsData.title}</h1>
+          <p className="text-gray-500 mt-4">
+            Published On {new Date(newsData.publishedAt).toLocaleDateString()}
+          </p>
+
+          <div className="border-t my-5"></div>
+
+          <p className="text-lg text-gray-700 font-medium text-justify">
+            {newsData.description}
+          </p>
+          <p className="text-gray-700 text-md mt-6 text-justify">
+            {newsData.content}
+          </p>
+          <Link
+            to={newsData.url}
+            className="inline-block mt-5 font-medium  bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700"
+          >
+            Read Full Article
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+};
+export default NewsDetails;
